@@ -28,6 +28,7 @@ import {
   InputMapping,
   KnowledgeBaseSelector,
   KnowledgeTagFilters,
+  LabelTooltip,
   LongInput,
   McpDynamicArgs,
   McpServerSelector,
@@ -195,7 +196,7 @@ const getPreviewValue = (
 }
 
 /**
- * Renders the label with optional validation and description tooltips.
+ * Renders the label with optional validation and help tooltips (`config.tooltip`).
  *
  * @param config - The sub-block configuration defining the label content
  * @param isValidJson - Whether the JSON content is valid (for code blocks)
@@ -258,6 +259,7 @@ const renderLabel = (
       <Label className='flex items-baseline gap-1.5 whitespace-nowrap'>
         {config.title}
         {required && <span className='ml-0.5'>*</span>}
+        {config.tooltip && <LabelTooltip text={config.tooltip} />}
         {labelSuffix}
         {config.type === 'code' &&
           config.language === 'json' &&
@@ -796,6 +798,7 @@ function SubBlockComponent({
             blockId={blockId}
             subBlockId={config.id}
             title={config.title ?? ''}
+            tooltip={config.tooltip}
             value={typeof config.defaultValue === 'boolean' ? config.defaultValue : undefined}
             isPreview={isPreview}
             previewValue={previewValue as any}

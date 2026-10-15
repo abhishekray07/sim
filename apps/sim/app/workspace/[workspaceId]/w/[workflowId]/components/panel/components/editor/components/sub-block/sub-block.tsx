@@ -4,7 +4,6 @@ import {
   ArrowLeftRight,
   ArrowUp,
   Check,
-  CircleInfo,
   Clipboard,
   SquareArrowUpRight,
   TriangleAlert,
@@ -29,6 +28,7 @@ import {
   InputMapping,
   KnowledgeBaseSelector,
   KnowledgeTagFilters,
+  LabelTooltip,
   LongInput,
   McpDynamicArgs,
   McpServerSelector,
@@ -259,18 +259,7 @@ const renderLabel = (
       <Label className='flex items-baseline gap-1.5 whitespace-nowrap'>
         {config.title}
         {required && <span className='ml-0.5'>*</span>}
-        {config.tooltip && (
-          <Tooltip.Root>
-            <Tooltip.Trigger asChild>
-              <span className='inline-flex self-center' aria-label={config.tooltip}>
-                <CircleInfo className='size-3 shrink-0 cursor-help text-muted-foreground' />
-              </span>
-            </Tooltip.Trigger>
-            <Tooltip.Content side='top' className='max-w-[280px] whitespace-normal'>
-              <p>{config.tooltip}</p>
-            </Tooltip.Content>
-          </Tooltip.Root>
-        )}
+        {config.tooltip && <LabelTooltip text={config.tooltip} />}
         {labelSuffix}
         {config.type === 'code' &&
           config.language === 'json' &&
@@ -809,6 +798,7 @@ function SubBlockComponent({
             blockId={blockId}
             subBlockId={config.id}
             title={config.title ?? ''}
+            tooltip={config.tooltip}
             value={typeof config.defaultValue === 'boolean' ? config.defaultValue : undefined}
             isPreview={isPreview}
             previewValue={previewValue as any}

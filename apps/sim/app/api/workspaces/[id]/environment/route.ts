@@ -4,6 +4,7 @@ import { workspaceEnvironment } from '@sim/db/schema'
 import { createLogger } from '@sim/logger'
 import { getErrorMessage } from '@sim/utils/errors'
 import { generateId } from '@sim/utils/id'
+import { omit } from '@sim/utils/object'
 import { eq } from 'drizzle-orm'
 import { type NextRequest, NextResponse } from 'next/server'
 import {
@@ -284,7 +285,10 @@ export const PUT = withRouteHandler(
           string,
           string
         >
-        const mergedVars = { ...existing, ...encryptedIncoming }
+        // The settings form sends every secret on save; keep the stored ciphertext
+        // for keys already in the map instead of rewriting each one with a new IV.
+        const additions = omit(encryptedIncoming, Object.keys(existing))
+        const mergedVars = { ...existing, ...additions }
 
         await tx
           .insert(workspaceEnvironment)
